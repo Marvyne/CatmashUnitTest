@@ -29,6 +29,18 @@ namespace UnitTestCatmash
         }
 
         [TestMethod]
+        public void GetTwoCatRandom_Should_Return_two_Cats_randomly()
+        {
+            var result = _client.GetAsync(url + "Cats/random/").Result;
+            List<Cat> cat_list = new List<Cat>();
+            if (result.IsSuccessStatusCode)
+                cat_list = JsonConvert.DeserializeObject<List<Cat>>(result.Content.ReadAsStringAsync().Result);
+            int nb_cats = cat_list.Count;
+            Assert.AreEqual(2, nb_cats);
+            Assert.AreNotEqual(cat_list[0], cat_list[1]);
+        }
+
+        [TestMethod]
         public void GetCat_Should_Return_Cat_By_Id()
         {
             var result = _client.GetAsync(url + "Cats/MTgwODA3MA").Result;
